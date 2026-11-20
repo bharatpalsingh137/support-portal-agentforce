@@ -1,0 +1,105 @@
+<template>
+    <lightning-card title="Get help" icon-name="standard:case">
+        <div class="slds-p-horizontal_medium">
+            <lightning-progress-indicator current-step={currentStep} type="path" variant="base">
+                <lightning-progress-step label="Category" value="1"></lightning-progress-step>
+                <lightning-progress-step label="Details" value="2"></lightning-progress-step>
+                <lightning-progress-step label="Review" value="3"></lightning-progress-step>
+            </lightning-progress-indicator>
+
+            <!-- Step 1: category -->
+            <template lwc:if={isStepOne}>
+                <lightning-radio-group
+                    class="slds-m-top_medium"
+                    name="category"
+                    label="What do you need help with?"
+                    options={categoryOptions}
+                    value={category}
+                    onchange={handleCategoryChange}
+                    required
+                ></lightning-radio-group>
+            </template>
+
+            <!-- Step 2: details + FAQ deflection -->
+            <template lwc:if={isStepTwo}>
+                <lightning-input
+                    class="slds-m-top_medium"
+                    label="Subject"
+                    value={subject}
+                    max-length="255"
+                    placeholder="e.g. I was charged twice this month"
+                    onchange={handleSubjectChange}
+                    required
+                ></lightning-input>
+
+                <template lwc:if={hasSuggestions}>
+                    <div class="slds-box slds-theme_shade slds-m-top_small" data-id="suggestions">
+                        <p class="slds-text-title_bold">These answers might solve it right away:</p>
+                        <ul class="slds-m-top_x-small">
+                            <template for:each={suggestions} for:item="faq">
+                                <li key={faq.Id} class="slds-m-bottom_x-small">
+                                    <details>
+                                        <summary class="faq-question">{faq.Name}</summary>
+                                        <p class="slds-p-around_x-small">
+                                            <lightning-formatted-text value={faq.Answer__c}></lightning-formatted-text>
+                                        </p>
+                                    </details>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+                <lightning-textarea
+                    class="slds-m-top_small"
+                    label="Describe the issue"
+                    value={description}
+                    max-length="32000"
+                    onchange={handleDescriptionChange}
+                    required
+                ></lightning-textarea>
+            </template>
+
+            <!-- Step 3: review -->
+            <template lwc:if={isStepThree}>
+                <dl class="slds-dl_horizontal slds-m-top_medium">
+                    <dt class="slds-dl_horizontal__label">Category</dt>
+                    <dd class="slds-dl_horizontal__detail">{categoryLabel}</dd>
+                    <dt class="slds-dl_horizontal__label">Subject</dt>
+                    <dd class="slds-dl_horizontal__detail">{subject}</dd>
+                    <dt class="slds-dl_horizontal__label">Description</dt>
+                    <dd class="slds-dl_horizontal__detail">
+                        <lightning-formatted-text value={description}></lightning-formatted-text>
+                    </dd>
+                </dl>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Submitting your case" size="small"></lightning-spinner>
+            </template>
+        </div>
+
+        <div slot="footer" class="slds-clearfix">
+            <div class="slds-float_right">
+                <lightning-button label="Back" onclick={handleBack} disabled={isStepOne}></lightning-button>
+                <template lwc:if={isStepThree}>
+                    <lightning-button
+                        class="slds-m-left_x-small"
+                        variant="brand"
+                        label="Submit case"
+                        onclick={handleSubmit}
+                        disabled={isLoading}
+                    ></lightning-button>
+                </template>
+                <template lwc:else>
+                    <lightning-button
+                        class="slds-m-left_x-small"
+                        variant="brand"
+                        label="Next"
+                        onclick={handleNext}
+                    ></lightning-button>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

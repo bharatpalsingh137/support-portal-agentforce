@@ -1,0 +1,49 @@
+<template>
+    <lightning-card title="My cases" icon-name="standard:case">
+        <lightning-button-icon
+            slot="actions"
+            icon-name="utility:refresh"
+            alternative-text="Refresh"
+            title="Refresh"
+            onclick={handleRefresh}
+        ></lightning-button-icon>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+            <lightning-radio-group
+                name="statusFilter"
+                label="Show"
+                options={filterOptions}
+                value={statusFilter}
+                type="button"
+                variant="label-inline"
+                onchange={handleFilterChange}
+            ></lightning-radio-group>
+        </div>
+
+        <template lwc:if={isLoading}>
+            <div class="slds-is-relative slds-p-around_large">
+                <lightning-spinner alternative-text="Loading cases" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:elseif={error}>
+            <div class="slds-p-horizontal_medium slds-text-color_error" data-id="error">{error}</div>
+        </template>
+
+        <template lwc:elseif={hasCases}>
+            <lightning-datatable
+                key-field="Id"
+                data={rows}
+                columns={columns}
+                hide-checkbox-column
+                onrowaction={handleRowAction}
+            ></lightning-datatable>
+        </template>
+
+        <template lwc:else>
+            <div class="slds-p-around_medium slds-text-align_center slds-text-color_weak" data-id="empty">
+                No cases to show. Need help? Use the "Get help" form to open one.
+            </div>
+        </template>
+    </lightning-card>
+</template>

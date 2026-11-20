@@ -1,0 +1,15 @@
+.timeline-item {
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-left: 3px solid transparent;
+}
+
+.timeline-item_customer {
+    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-left-color: var(--slds-g-color-brand-base-50, #0176d3);
+}
+
+.timeline-item_support {
+    background: var(--slds-g-color-neutral-base-100, #ffffff);
+    border-left-color: var(--slds-g-color-success-base-50, #2e844a);
+}

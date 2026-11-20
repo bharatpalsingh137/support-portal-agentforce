@@ -1,0 +1,5 @@
+.faq-question {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+}

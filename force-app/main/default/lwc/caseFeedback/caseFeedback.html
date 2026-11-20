@@ -1,0 +1,47 @@
+<template>
+    <div class="slds-box slds-m-top_medium">
+        <p class="slds-text-heading_small">How did we do?</p>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+            Your case is closed. Please rate the support you received.
+        </p>
+
+        <div class="stars" role="radiogroup" aria-label="Rating">
+            <template for:each={stars} for:item="star">
+                <button
+                    key={star.value}
+                    class={star.cssClass}
+                    data-value={star.value}
+                    role="radio"
+                    aria-checked={star.checked}
+                    aria-label={star.label}
+                    title={star.label}
+                    onclick={handleStarClick}
+                >
+                    {star.symbol}
+                </button>
+            </template>
+            <span class="slds-m-left_small slds-text-body_small" data-id="rating-label">{ratingLabel}</span>
+        </div>
+
+        <lightning-textarea
+            class="slds-m-top_small"
+            label="Anything else you'd like to tell us? (optional)"
+            value={comments}
+            max-length="5000"
+            onchange={handleCommentsChange}
+        ></lightning-textarea>
+
+        <template lwc:if={errorText}>
+            <p class="slds-text-color_error slds-m-top_x-small" data-id="error">{errorText}</p>
+        </template>
+
+        <div class="slds-m-top_small slds-text-align_right">
+            <lightning-button
+                variant="brand"
+                label="Submit feedback"
+                onclick={handleSubmit}
+                disabled={isSubmitting}
+            ></lightning-button>
+        </div>
+    </div>
+</template>
